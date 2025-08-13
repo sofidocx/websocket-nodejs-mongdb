@@ -1,0 +1,24 @@
+{
+  "name": "websocket-nodejs-mongdb",
+  "version": "1.0.0",
+  "description": "[![Alura](https://img.shields.io/badge/Alura-0078D4?style=for-the-badge&logo=alura&logoColor=white)](https://www.alura.com.br/)\r [![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)\r [![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)\r [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/pt-BR/docs/Web/JavaScript)\r [![Express](https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sofidocx/websocket-nodejs-mongdb.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sofidocx/websocket-nodejs-mongdb/issues"
+  },
+  "homepage": "https://github.com/sofidocx/websocket-nodejs-mongdb#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
