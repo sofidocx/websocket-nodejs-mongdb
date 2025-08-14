@@ -2,8 +2,13 @@ import { atualizaTextoEditor } from "./documento.js";
 
 const socket = io(); 
 
-function emitirTextoEditor (texto) {
-     socket.emit("texto_editor", texto ); 
+function selecionarDocumento(nome) {
+    socket.emit("selecionar_documento", nome); 
+}
+
+
+function emitirTextoEditor (dados) {
+     socket.emit("texto_editor", dados); 
 }; 
 
 socket.on("texto_editor_clientes", (texto) => {
@@ -11,4 +16,4 @@ socket.on("texto_editor_clientes", (texto) => {
      //atualiza o valor do campo de texto no campo do documento 
 }); 
 
-export { emitirTextoEditor }; 
+export { emitirTextoEditor, selecionarDocumento }; 
