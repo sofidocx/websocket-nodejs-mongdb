@@ -1,4 +1,4 @@
-import { encontrarDocumento } from "./documentosDb.js";
+import { atualizaDocumento, encontrarDocumento } from "./documentosDb.js";
 import io from "./servidor.js";
 
 io.on("connection", (socket) => {
@@ -7,7 +7,6 @@ io.on("connection", (socket) => {
     socket.on("selecionar_documento", async (nomeDocumento, devolverTexto) => {
         socket.join(nomeDocumento); //pega o socket conectado agora e coloca em uma "sala" com o nome do documento, onde podemos agrupar conexões 
         const documento = await encontrarDocumento(nomeDocumento);
-        console.log(documento); 
         if (documento) {
             //socket.emit("texto_documento", documento.texto); 
             devolverTexto(documento.texto);
@@ -16,11 +15,9 @@ io.on("connection", (socket) => {
 
 
     //para cada cliente, iremos escutar os eventos 
-    socket.on("texto_editor", ({ texto, nomeDocumento }) => {
-        const documento = encontrarDocumento(nomeDocumento); 
-
-        if(documento) {
-            documento.texto = texto; 
+    socket.on("texto_editor", async ({ texto, nomeDocumento }) => {
+        const atualizacao = await atualizaDocumento(nomeDocumento, texto);  
+        if(atualizacao.modifiedCount) {
             socket.to(nomeDocumento).emit("texto_editor_clientes", texto); 
         }
         //enviar esse evento para todos os clientes menos para o já conectado nesse socket 
