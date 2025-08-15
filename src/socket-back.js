@@ -1,9 +1,5 @@
-import { documentosColecao } from "./dbConnect.js";
+import { encontrarDocumento } from "./documentosDb.js";
 import io from "./servidor.js";
-
-
-
-
 
 io.on("connection", (socket) => {
     console.log("Um cliente se conectou! ID: ", socket.id); //id do cliente que esta se conectando 
@@ -32,11 +28,3 @@ io.on("connection", (socket) => {
     });
 
 });  //escutar evento - on 
-
-function encontrarDocumento(nome) {
-    const documento = documentosColecao.findOne({
-        nome
-    }); 
-
-    return documento; 
-}
