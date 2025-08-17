@@ -32,7 +32,7 @@ io.on("connection", (socket) => {
         if (documento) {
             //socket.emit("texto_documento", documento.texto); 
             devolverTexto(documento.texto);
-        }
+        };
     });
 
 
@@ -41,13 +41,16 @@ io.on("connection", (socket) => {
         const atualizacao = await atualizaDocumento(nomeDocumento, texto);
         if (atualizacao.modifiedCount) {
             socket.to(nomeDocumento).emit("texto_editor_clientes", texto);
-        }
+        };
         //enviar esse evento para todos os clientes menos para o já conectado nesse socket 
         //socket.broadcast.emit("texto_editor_clientes", texto);
     });
 
     socket.on("excluir_documento", async (nome) => {
         const resultado = await excluirDocumento(nome);
-        console.log(resultado);
+        // se o deletedCount não for zero, entramos no if 
+        if(resultado.deletedCount) {
+            io.emit("excluir_documento_sucesso", nome);
+        };
     });
 });  //escutar evento - on 
