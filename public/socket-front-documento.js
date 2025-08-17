@@ -21,4 +21,8 @@ socket.on("texto_editor_clientes", (texto) => {
      //atualiza o valor do campo de texto no campo do documento 
 }); 
 
-export { emitirTextoEditor, selecionarDocumento }; 
+function emitirExcluirDocumento (nome) {
+    socket.emit("excluir_documento", nome); 
+}
+
+export { emitirTextoEditor, selecionarDocumento, emitirExcluirDocumento }; 
