@@ -1,8 +1,15 @@
-import { atualizaDocumento, encontrarDocumento } from "./documentosDb.js";
+import { atualizaDocumento, encontrarDocumento, obterDocumentos } from "./documentosDb.js";
 import io from "./servidor.js";
 
 io.on("connection", (socket) => {
     console.log("Um cliente se conectou! ID: ", socket.id); //id do cliente que esta se conectando 
+
+    socket.on("obter_documento", async (devolverDocumentos) => {
+        //operação do banco de dados para retornar todos os documentos 
+        const documentos = await obterDocumentos(); 
+
+        devolverDocumentos(documentos); 
+    }); 
     
     socket.on("selecionar_documento", async (nomeDocumento, devolverTexto) => {
         socket.join(nomeDocumento); //pega o socket conectado agora e coloca em uma "sala" com o nome do documento, onde podemos agrupar conexões 
