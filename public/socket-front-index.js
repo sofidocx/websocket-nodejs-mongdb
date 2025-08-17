@@ -9,3 +9,12 @@ socket.emit("obter_documento", (documentos) => {
     });
 }); 
 
+function emitirAdicionarDocumento (nome) {
+    socket.emit("adicionar_documento", nome); 
+}
+
+socket.on("adicionar_documento_interface", (nome) => {
+    inserirLinkDocumento(nome); 
+});
+
+export { emitirAdicionarDocumento }; 
