@@ -1,8 +1,19 @@
 import { emitirAdicionarDocumento } from "./socket-front-index.js";
+import { obterCookie, removerCookie } from "./utils/cookies.js";
+
+const tokenJwt = obterCookie("tokenJwt"); 
+console.log(tokenJwt); 
 
 const listaDocumentos = document.getElementById("lista-documentos");
 const form = document.getElementById("form-adiciona-documento"); 
 const inputDocumento = document.getElementById("input-documento"); 
+const botaoLogout = document.getElementById("botao-logout"); 
+
+botaoLogout.addEventListener("click", () => {
+    removerCookie("tokenJwt"); 
+    alert("Usuário deslogado com sucesso"); 
+    window.location.href = "/login/index.html"; 
+})
 
 
 //capturar o que o usuário irá preencher no título para adicionar um novo documento 
