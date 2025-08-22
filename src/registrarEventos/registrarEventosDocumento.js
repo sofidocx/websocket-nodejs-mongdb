@@ -13,7 +13,9 @@ function registrarEventosDocumento (socket, io) {
             adicionarConexao({ nomeDocumento, nomeUsuario });
 
             const usuariosNoDocumento = obterUsuariosDocumento(nomeDocumento); 
-            console.log(usuariosNoDocumento); 
+            
+            //usando io.to pois queremos enviar para todos os clientes conectados, inclusive o que esta conectado no momento 
+            io.to(nomeDocumento). emit("usuarios_no_documento", usuariosNoDocumento); 
 
             //socket.emit("texto_documento", documento.texto); 
             devolverTexto(documento.texto);
