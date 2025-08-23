@@ -1,5 +1,5 @@
 import { atualizaDocumento, encontrarDocumento, excluirDocumento } from "../db/documentosDb.js";
-import { adicionarConexao, obterUsuariosDocumento } from "../utils/conexoesDocumentos.js";
+import { adicionarConexao, obterUsuariosDocumento, removerConexao } from "../utils/conexoesDocumentos.js";
 
 
 function registrarEventosDocumento(socket, io) {
@@ -40,7 +40,11 @@ function registrarEventosDocumento(socket, io) {
     });
         //colocando o ouvinte do disconnect apenas para clientes que entraram em uma página específica 
         socket.on("disconnect", () => {
-            console.log(`O cliente ${socket.id} foi desconectado `);
+            removerConexao(nomeDocumento, nomeUsuario);
+            const usuariosNoDocumento = obterUsuariosDocumento(nomeDocumento);
+
+            //usando io.to pois queremos enviar para todos os clientes conectados, inclusive o que esta conectado no momento 
+            io.to(nomeDocumento).emit("usuarios_no_documento", usuariosNoDocumento);
         });
 
     }
