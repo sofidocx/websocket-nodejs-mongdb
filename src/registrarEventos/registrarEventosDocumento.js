@@ -2,9 +2,9 @@ import { atualizaDocumento, encontrarDocumento, excluirDocumento } from "../db/d
 import { adicionarConexao, obterUsuariosDocumento } from "../utils/conexoesDocumentos.js";
 
 
-function registrarEventosDocumento (socket, io) {
+function registrarEventosDocumento(socket, io) {
     socket.on("selecionar_documento", async ({ nomeDocumento, nomeUsuario }, devolverTexto) => {
-        
+
         //pega o socket conectado agora e coloca em uma "sala" com o nome do documento, onde podemos agrupar conexões 
         const documento = await encontrarDocumento(nomeDocumento);
         if (documento) {
@@ -12,18 +12,16 @@ function registrarEventosDocumento (socket, io) {
 
             adicionarConexao({ nomeDocumento, nomeUsuario });
 
-            const usuariosNoDocumento = obterUsuariosDocumento(nomeDocumento); 
-            
+            const usuariosNoDocumento = obterUsuariosDocumento(nomeDocumento);
+
             //usando io.to pois queremos enviar para todos os clientes conectados, inclusive o que esta conectado no momento 
-            io.to(nomeDocumento). emit("usuarios_no_documento", usuariosNoDocumento); 
+            io.to(nomeDocumento).emit("usuarios_no_documento", usuariosNoDocumento);
 
             //socket.emit("texto_documento", documento.texto); 
             devolverTexto(documento.texto);
         };
-    });
 
-
-    //para cada cliente, iremos escutar os eventos 
+         //para cada cliente, iremos escutar os eventos 
     socket.on("texto_editor", async ({ texto, nomeDocumento }) => {
         const atualizacao = await atualizaDocumento(nomeDocumento, texto);
         if (atualizacao.modifiedCount) {
@@ -36,10 +34,21 @@ function registrarEventosDocumento (socket, io) {
     socket.on("excluir_documento", async (nome) => {
         const resultado = await excluirDocumento(nome);
         // se o deletedCount não for zero, entramos no if 
-        if(resultado.deletedCount) {
+        if (resultado.deletedCount) {
             io.emit("excluir_documento_sucesso", nome);
         };
     });
+        //colocando o ouvinte do disconnect apenas para clientes que entraram em uma página específica 
+        socket.on("disconnect", () => {
+            console.log(`O cliente ${socket.id} foi desconectado `);
+        });
+
+    }
+    );
+
+
+
+   
 }
 
 export default registrarEventosDocumento; 
