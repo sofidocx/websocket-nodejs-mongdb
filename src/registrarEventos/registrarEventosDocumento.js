@@ -17,6 +17,10 @@ function registrarEventosDocumento(socket, io) {
 
                 adicionarConexao({ nomeDocumento, nomeUsuario });
 
+                socket.data = {
+                    usuarioEntrou: true, 
+                }
+
                 const usuariosNoDocumento = obterUsuariosDocumento(nomeDocumento);
 
                 //usando io.to pois queremos enviar para todos os clientes conectados, inclusive o que esta conectado no momento 
@@ -48,11 +52,18 @@ function registrarEventosDocumento(socket, io) {
         });
         //colocando o ouvinte do disconnect apenas para clientes que entraram em uma página específica 
         socket.on("disconnect", () => {
-            removerConexao(nomeDocumento, nomeUsuario);
-            const usuariosNoDocumento = obterUsuariosDocumento(nomeDocumento);
 
-            //usando io.to pois queremos enviar para todos os clientes conectados, inclusive o que esta conectado no momento 
-            io.to(nomeDocumento).emit("usuarios_no_documento", usuariosNoDocumento);
+            //guardando no proprio socket uma informação, guardamos nessa propriedade apenas se o usuário realmente entrou 
+
+            if (socket.data.usuarioEntrou) {
+
+                removerConexao(nomeDocumento, nomeUsuario);
+                const usuariosNoDocumento = obterUsuariosDocumento(nomeDocumento);
+    
+                //usando io.to pois queremos enviar para todos os clientes conectados, inclusive o que esta conectado no momento 
+                io.to(nomeDocumento).emit("usuarios_no_documento", usuariosNoDocumento);
+            }
+
         });
 
     }
